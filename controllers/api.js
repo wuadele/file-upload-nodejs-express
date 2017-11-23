@@ -43,6 +43,7 @@ var uploadPhoto = (req, res) => {
             var collection = utils.loadCollection(COLLECTION_NAME, db);
 
             var filename = req.file.filename;
+            var mimetype = req.file.mimetype;
             var originalImagePath = `${UPLOAD_PATH}/original/${filename}`;
             var smallImagePath = `${UPLOAD_PATH}/small/${filename}`;
             var mediumImagePath = `${UPLOAD_PATH}/medium/${filename}`;
@@ -61,7 +62,7 @@ var uploadPhoto = (req, res) => {
                         .write(largeImagePath);
                 });
                 // original image
-                collection.insert({path: originalImagePath, name: filename});
+                collection.insert({path: originalImagePath, name: filename, mimetype: mimetype});
                 // resized images
                 collection.insert({path: smallImagePath, name: filename});
                 collection.insert({path: mediumImagePath, name: filename});
@@ -79,4 +80,21 @@ const getPhotos = (req, res) => {
     res.send(rows.data);
 }
 
-module.exports = { uploadPhoto, getPhotos }
+const getPhotoById = (req, res) => {
+    try {
+        var col = utils.loadCollection(COLLECTION_NAME, db);
+        var result = col.get(req.params.id);
+
+        if (!result) {
+            res.sendStatus(404);
+            return;
+        };
+
+        res.setHeader('Content-Type', result.mimetype);
+        fs.createReadStream(result.path).pipe(res);
+    } catch (err) {
+        res.sendStatus(400);
+    }
+}
+
+module.exports = { uploadPhoto, getPhotos, getPhotoById }

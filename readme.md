@@ -7,8 +7,9 @@ A file upload sample project. Includes customized image resizing mechanism.
 4. Go to `localhost:3000`
 
 ###### API End Points
-1. Upload an image via `POST localhost:3000/image`, avatar field.
+1. Upload an image via `POST localhost:3000/upload`, avatar field.
 2. View list of images via `GET localhost:3000/images`.
+3. View single image via `GET localhost:3000/images/{id}`.
 
 ###### Photo Caching
 1. The original image path: `upload/original`

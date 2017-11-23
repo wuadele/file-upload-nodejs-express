@@ -1,6 +1,11 @@
 const express = require('express')
-const app = express()
+const cors = require('cors')
+const bodyParser = require('body-parser')
 const config = require('./config/config.js')
+
+const app = express()
+app.use(bodyParser.json())
+app.use(cors())
 
 require('./config/database.js');
 require('./controllers/routes.js')(app);

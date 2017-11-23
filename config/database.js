@@ -1,5 +1,5 @@
 const loki = require('lokijs')
 var db = new loki('db.json')
 
-db.addCollection('images', {indices: ['path', 'name']})
+db.addCollection('images', {indices: ['path', 'name', 'mimetype']})
 db.saveDatabase();
