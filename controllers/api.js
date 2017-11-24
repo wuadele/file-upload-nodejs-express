@@ -52,13 +52,13 @@ var uploadPhoto = (req, res) => {
             try {
                 jimp.read(req.file.path, function (err, img) {
                     if (err) throw err;
-                    img.resize(config.image.small.h, config.image.small.w)
+                    img.resize(config.image.small.h, jimp.AUTO)
                         .quality(100)
                         .write(smallImagePath);
-                    img.resize(config.image.medium.h, config.image.medium.w)
+                    img.resize(config.image.medium.h, jimp.AUTO)
                         .quality(100)
                         .write(mediumImagePath);
-                    img.resize(config.image.large.h, config.image.large.w)
+                    img.resize(config.image.large.h, jimp.AUTO)
                         .quality(100)
                         .write(largeImagePath);
                 });

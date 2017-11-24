@@ -17,5 +17,5 @@ A file upload sample project. Includes customized image resizing mechanism.
 2. Once the server restart, the image info will be discarded due to the data was cached in memory storage.
 
 ###### Config
-1. You can change the settings in file `config/config.js` to customize 3 scaling width/height of images.
+1. You can change the settings in file `config/config.js` to customize 3 scaling height(scale the width accordingly) of images.
 2. Modify the config file to customize server port. 
