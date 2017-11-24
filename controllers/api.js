@@ -48,6 +48,7 @@ var uploadPhoto = (req, res) => {
             var smallImagePath = `${UPLOAD_PATH}/small/${filename}`;
             var mediumImagePath = `${UPLOAD_PATH}/medium/${filename}`;
             var largeImagePath = `${UPLOAD_PATH}/large/${filename}`;
+            var resultArray = {};
             try {
                 jimp.read(req.file.path, function (err, img) {
                     if (err) throw err;
@@ -62,15 +63,20 @@ var uploadPhoto = (req, res) => {
                         .write(largeImagePath);
                 });
                 // original image
-                collection.insert({path: originalImagePath, name: filename, mimetype: mimetype});
+                var result = collection.insert({path: originalImagePath, name: filename, mimetype: mimetype});
+                console.log('original:' + result.$loki);
                 // resized images
-                collection.insert({path: smallImagePath, name: filename});
-                collection.insert({path: mediumImagePath, name: filename});
-                collection.insert({path: largeImagePath, name: filename});
+                result = collection.insert({path: smallImagePath, name: filename, mimetype: mimetype});
+                resultArray['image_s_id'] = result.$loki;
+                result = collection.insert({path: mediumImagePath, name: filename, mimetype: mimetype});
+                resultArray['image_m_id'] = result.$loki;
+                result = collection.insert({path: largeImagePath, name: filename, mimetype: mimetype});
+                resultArray['image_l_id'] = result.$loki;
             } catch (err) {
-                console.log('Fail resizing images');
+                console.log('Fail resizing images')
             }
-            res.sendStatus(200);
+            res.setHeader('Content-Type', 'application/json')
+            res.status(200).send(JSON.stringify(resultArray))
         }
     })
 }
