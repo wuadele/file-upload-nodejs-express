@@ -51,16 +51,22 @@ var uploadPhoto = (req, res) => {
             var resultArray = {};
             try {
                 jimp.read(req.file.path, function (err, img) {
-                    if (err) throw err;
-                    img.resize(config.image.small.h, jimp.AUTO)
+                    if (err) throw err
+                    img.scale(0.4)
                         .quality(100)
-                        .write(smallImagePath);
-                    img.resize(config.image.medium.h, jimp.AUTO)
+                        .write(smallImagePath)
+                });
+                jimp.read(req.file.path, function (err, img) {
+                    if (err) throw err
+                    img.scale(0.9)
                         .quality(100)
-                        .write(mediumImagePath);
-                    img.resize(config.image.large.h, jimp.AUTO)
+                        .write(mediumImagePath)
+                });
+                jimp.read(req.file.path, function (err, img) {
+                    if (err) throw err
+                    img.scale(2)
                         .quality(100)
-                        .write(largeImagePath);
+                        .write(largeImagePath)
                 });
                 // original image
                 var result = collection.insert({path: originalImagePath, name: filename, mimetype: mimetype});
